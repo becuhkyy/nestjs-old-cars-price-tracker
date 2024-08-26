@@ -7,8 +7,10 @@ import { UserModule } from './user/user.module';
     ReportModule,
     TypeOrmModule.forRoot({
       type: 'sqlite',
-      database: 'db.reports',
+      database: 'db.sqlite',
       autoLoadEntities: true,
+      //Enable auto migrations. Disable this in production
+      synchronize: true,
     }),
     UserModule,
   ],
