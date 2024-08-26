@@ -1,12 +1,16 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateReportDto } from './dto/create-report.dto';
 import { UpdateReportDto } from './dto/update-report.dto';
-import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 import { Report } from './entities/report.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class ReportService {
-  constructor(private readonly reportsRepository: Repository<Report>) {}
+  constructor(
+    @InjectRepository(Report)
+    private readonly reportsRepository: Repository<Report>,
+  ) {}
 
   create(createReportDto: CreateReportDto) {
     return 'This action adds a new report';
