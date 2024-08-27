@@ -13,7 +13,9 @@ import { DuplicateUserException } from './exceptions/duplicate-user.exception';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectRepository(User) private userRepository: UserRepository) {}
+  constructor(
+    @InjectRepository(UserRepository) private userRepository: UserRepository,
+  ) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
     try {
@@ -34,6 +36,10 @@ export class UserService {
     }
 
     return user;
+  }
+
+  findByUsername(username: string): Promise<User> {
+    return this.userRepository.findOneBy({ username });
   }
 
   find(): Promise<User[]> {
