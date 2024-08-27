@@ -1,25 +1,29 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
-import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UserRepository } from './user.repository';
+import { DuplicateUserException } from './exceptions/duplicate-user.exception';
 
 @Injectable()
 export class UserService {
-  constructor(
-    @InjectRepository(User) private userRepository: Repository<User>,
-  ) {}
+  constructor(@InjectRepository(User) private userRepository: UserRepository) {}
 
-  create(createUserDto: CreateUserDto): Promise<User> {
-    const { username, password } = createUserDto;
-
-    const user = this.userRepository.create({
-      username,
-      password,
-    });
-
-    return this.userRepository.save(user);
+  async create(createUserDto: CreateUserDto): Promise<User> {
+    try {
+      return await this.userRepository.createUser(createUserDto);
+    } catch (error) {
+      if (error instanceof DuplicateUserException) {
+        throw new ConflictException(error.message);
+      }
+      throw new InternalServerErrorException('Failed to create user');
+    }
   }
 
   async findOne(id: number): Promise<User> {

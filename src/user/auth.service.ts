@@ -1,24 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { UserService } from './user.service';
-import * as bcrypt from 'bcrypt';
 import { CreateUserDto } from './dto/create-user.dto';
+import { User } from './entities/user.entity';
 
 @Injectable()
 export class AuthService {
   constructor(private userService: UserService) {}
 
-  async register(createUserDto: CreateUserDto) {
-    const { username, password: plainPassword } = createUserDto;
-
-    const salt = await bcrypt.genSalt(10);
-    const password = await bcrypt.hash(plainPassword, salt);
-
-    const user = await this.userService.create({
-      username,
-      password,
-    });
-
-    return user;
+  async register(createUserDto: CreateUserDto): Promise<User> {
+    return await this.userService.create(createUserDto);
   }
 
   login() {}
