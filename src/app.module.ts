@@ -8,7 +8,7 @@ import { UserModule } from './user/user.module';
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: 'db.sqlite',
-      autoLoadEntities: true,
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
       //Enable auto migrations. Disable this in production
       synchronize: true,
     }),
