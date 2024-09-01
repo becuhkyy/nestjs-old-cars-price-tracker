@@ -1,8 +1,8 @@
 {
-  "name": "nestjs-sell-my-old-car",
+  "name": "nestjs-old-cars-price-tracker",
   "version": "0.0.1",
   "description": "",
-  "author": "",
+  "author": "Vesko V.",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
